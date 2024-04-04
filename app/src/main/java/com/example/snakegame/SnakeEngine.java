@@ -1,5 +1,6 @@
 package com.example.snakegame;
 
+import android.media.AudioAttributes;
 import android.os.Vibrator;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -54,7 +55,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
     // Control pausing between updates
     private long nextFrameTime;
     // Update the game 10 times per second
-    private final long FPS = 15;
+    private final long FPS = 5;
     // There are 1000 milliseconds in a second
     private final long MILLIS_PER_SECOND = 1000;
 // We will draw the frame much more often
@@ -89,8 +90,8 @@ class SnakeEngine extends SurfaceView implements Runnable {
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
         // Choose the minimum of width and height as the screen size to make the playing area square
-        screenX = Math.min(size.x, size.y);
-        screenY = screenX; // Set the height equal to the width
+        screenX = size.x;
+        screenY = size.x + 500;
 
         // Work out how many pixels each block is
         blockSize = screenX / NUM_BLOCKS_WIDE;
@@ -98,7 +99,15 @@ class SnakeEngine extends SurfaceView implements Runnable {
         numBlocksHigh = screenY / blockSize;
 
         // Set the sound up
-        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(5)
+                .setAudioAttributes(audioAttributes)
+                .build();
         try {
             // Create objects of the 2 required classes
             // Use m_Context because this is a reference to the Activity
@@ -106,15 +115,17 @@ class SnakeEngine extends SurfaceView implements Runnable {
             AssetFileDescriptor descriptor;
 
             // Prepare the two sounds in memory
-            descriptor = assetManager.openFd("get_mouse_sound.ogg");
+            descriptor = assetManager.openFd("pick_up_MRT.ogg");
             eat_bob = soundPool.load(descriptor, 0);
 
-            descriptor = assetManager.openFd("death_sound.ogg");
+            descriptor = assetManager.openFd("MRT_crash.ogg");
             snake_crash = soundPool.load(descriptor, 0);
 
         } catch (IOException e) {
             // Error
+            System.out.println("cannot retrieve game sounds");
         }
+
 
         // Initialize the drawing objects
         surfaceHolder = getHolder();
@@ -192,7 +203,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
         spawnBob();
         //add to the score
         addScore();
-        soundPool.play(eat_bob, 1, 1, 0, 0, 1);
+//        soundPool.play(eat_bob, 1, 1, 0, 0, 1);
         vibrator.vibrate(500);
     }
 
@@ -240,7 +251,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
         // Eaten itself?
         for (int i = snakeLength - 1; i > 0; i--) {
-            if ((i > 4) && (snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
+            if ((snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
                 dead = true;
             }
         }
@@ -258,7 +269,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
         if (detectDeath()) {
             //start again
-            soundPool.play(snake_crash, 1, 1, 0, 0, 1);
+//            soundPool.play(snake_crash, 1, 1, 0, 0, 1);
 
             newGame();
         }
@@ -270,35 +281,42 @@ class SnakeEngine extends SurfaceView implements Runnable {
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
 
-            // Fill the screen with the color of your choice for the playing area
-            paint.setColor(Color.BLUE); // Change Color.BLUE to your desired color
-            canvas.drawRect(0, 0, screenX, screenY, paint);
+            // Draw the playing area
+            canvas.drawColor(Color.BLACK); // Choose your desired background color
+            int playingAreaLeft = 0;
+            int playingAreaTop = 200; // Adjust this value to shift the playing area lower
+            int playingAreaRight = screenX;
+            int playingAreaBottom = screenY + 200; // Adjust this value to shift the playing area lower
+            paint.setColor(Color.GREEN); // Change Color.BLUE to your desired color
+            canvas.drawRect(playingAreaLeft, playingAreaTop, playingAreaRight, playingAreaBottom, paint);
 
-            // Set the color of the paint to draw the snake white
+            // Draw the snake
             paint.setColor(Color.argb(255, 255, 255, 255));
-
-            // Scale the HUD text
-            paint.setTextSize(90);
-            canvas.drawText("Score:" + score, 10, 70, paint);
-
-            // Draw the snake one block at a time
             for (int i = 0; i < snakeLength; i++) {
                 canvas.drawRect(snakeXs[i] * blockSize,
-                        (snakeYs[i] * blockSize),
+                        (snakeYs[i] * blockSize) + playingAreaTop,
                         (snakeXs[i] * blockSize) + blockSize,
-                        (snakeYs[i] * blockSize) + blockSize,
+                        (snakeYs[i] * blockSize) + blockSize + playingAreaTop,
                         paint);
             }
 
-            // Set the color of the paint to draw Bob red
-            paint.setColor(Color.argb(255, 255, 0, 0));
-
             // Draw Bob
+            paint.setColor(Color.argb(255, 255, 0, 0));
             canvas.drawRect(bobX * blockSize,
-                    (bobY * blockSize),
+                    (bobY * blockSize) + playingAreaTop,
                     (bobX * blockSize) + blockSize,
-                    (bobY * blockSize) + blockSize,
+                    (bobY * blockSize) + blockSize + playingAreaTop,
                     paint);
+
+            // Draw the score
+            paint.setTextSize(90);
+            canvas.drawText("Score:" + score, 10, 70, paint);
+
+            // Draw the "L" and "R" buttons
+            paint.setColor(Color.WHITE);
+            paint.setTextSize(120); // Increase text size for bigger buttons
+            canvas.drawText("L", screenX / 4 - 60, playingAreaBottom + 200, paint);
+            canvas.drawText("R", screenX * 3 / 4 - 60, playingAreaBottom + 200, paint);
 
             // Unlock the canvas and reveal the graphics for this frame
             surfaceHolder.unlockCanvasAndPost(canvas);
@@ -324,26 +342,15 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
+        float touchX = motionEvent.getX();
+        float touchY = motionEvent.getY();
 
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
-                if (motionEvent.getX() >= screenX / 2) {
-                    switch(heading){
-                        case UP:
-                            heading = Heading.RIGHT;
-                            break;
-                        case RIGHT:
-                            heading = Heading.DOWN;
-                            break;
-                        case DOWN:
-                            heading = Heading.LEFT;
-                            break;
-                        case LEFT:
-                            heading = Heading.UP;
-                            break;
-                    }
-                } else {
-                    switch(heading){
+                // Check if the touch event is within the "L" button bounds
+                if (touchX >= 0 && touchX < screenX / 2 && touchY > screenY + 200) {
+                    // Move left
+                    switch (heading) {
                         case UP:
                             heading = Heading.LEFT;
                             break;
@@ -358,6 +365,25 @@ class SnakeEngine extends SurfaceView implements Runnable {
                             break;
                     }
                 }
+                // Check if the touch event is within the "R" button bounds
+                else if (touchX >= screenX / 2 && touchX < screenX && touchY > screenY + 200) {
+                    // Move right
+                    switch (heading) {
+                        case UP:
+                            heading = Heading.RIGHT;
+                            break;
+                        case RIGHT:
+                            heading = Heading.DOWN;
+                            break;
+                        case DOWN:
+                            heading = Heading.LEFT;
+                            break;
+                        case LEFT:
+                            heading = Heading.UP;
+                            break;
+                    }
+                }
+                break;
         }
         return true;
     }
