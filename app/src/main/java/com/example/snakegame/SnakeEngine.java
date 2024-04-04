@@ -23,7 +23,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
     // To hold a reference to the Activity
     private Context context;
 
-    // for plaing sound effects
+    // for playing sound effects
     private SoundPool soundPool;
     private int eat_bob = -1;
     private int snake_crash = -1;
@@ -60,7 +60,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
 // We will draw the frame much more often
 
     // How many points does the player have
-    private int score;
+    private volatile int score;
 
     // The location in the grid of all the segments
     private int[] snakeXs;
@@ -174,6 +174,10 @@ class SnakeEngine extends SurfaceView implements Runnable {
         nextFrameTime = System.currentTimeMillis();
     }
 
+    public synchronized void addScore() {
+        score = score + 1;
+    }
+
     public void spawnBob() {
         Random random = new Random();
         bobX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
@@ -188,7 +192,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
         // This reminds me of Edge of Tomorrow. Oneday Bob will be ready!
         spawnBob();
         //add to the score
-        score = score + 1;
+        addScore();
         soundPool.play(eat_bob, 1, 1, 0, 0, 1);
         vibrator.vibrate(500);
     }
