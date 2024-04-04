@@ -48,13 +48,13 @@ class SnakeEngine extends SurfaceView implements Runnable {
     private int blockSize;
 
     // The size in segments of the playable area
-    private final int NUM_BLOCKS_WIDE = 40;
+    private final int NUM_BLOCKS_WIDE = 20;
     private int numBlocksHigh;
 
     // Control pausing between updates
     private long nextFrameTime;
     // Update the game 10 times per second
-    private final long FPS = 10;
+    private final long FPS = 15;
     // There are 1000 milliseconds in a second
     private final long MILLIS_PER_SECOND = 1000;
 // We will draw the frame much more often
@@ -87,8 +87,6 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
         // Initialize Vibrator
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-
-        context = context;
 
         screenX = size.x;
         screenY = size.y;
@@ -269,8 +267,8 @@ class SnakeEngine extends SurfaceView implements Runnable {
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
 
-            // Fill the screen with Game Code School blue
-            canvas.drawColor(Color.argb(255, 26, 128, 182));
+            // Fill the screen with BLACK
+            canvas.drawColor(Color.GREEN);
 
             // Set the color of the paint to draw the snake white
             paint.setColor(Color.argb(255, 255, 255, 255));
