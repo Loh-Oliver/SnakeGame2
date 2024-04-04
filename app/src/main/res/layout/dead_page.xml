@@ -31,7 +31,7 @@
             android:id="@+id/myButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Play"
+            android:text="@string/play_again"
             android:textSize="16sp"
             android:textColor="@android:color/white"
             android:background="@android:color/holo_purple"
@@ -41,6 +41,21 @@
             android:paddingBottom="8dp"
             android:layout_margin="8dp"
             android:onClick="play" />
+
+        <Button
+            android:id="@+id/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quit"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:background="@android:color/holo_purple"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_margin="8dp"
+            android:onClick="Quit" />
 
 
         <!-- TextView -->
