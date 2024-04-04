@@ -135,8 +135,6 @@ class SnakeEngine extends SurfaceView implements Runnable {
         snakeXs = new int[200];
         snakeYs = new int[200];
 
-        // Start the game
-        newGame();
     }
 
     @Override

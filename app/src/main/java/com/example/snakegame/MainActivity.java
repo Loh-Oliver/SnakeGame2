@@ -1,11 +1,13 @@
 package com.example.snakegame;
 import android.content.Intent;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Display;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,10 +15,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 
 
+
 public class MainActivity extends Activity {
 
     // Declare an instance of SnakeEngine
     SnakeEngine snakeEngine;
+    MediaPlayer mediaPlayer;
     Display display;
 
     @Override
@@ -32,17 +36,22 @@ public class MainActivity extends Activity {
 
         // Create a new instance of the SnakeEngine class
         snakeEngine = new SnakeEngine(this, size);
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.crazyfrog);
+
+        mediaPlayer.start();
 
     }
 
     public void play(View view) {
         setContentView(snakeEngine);
+        snakeEngine.newGame();
     }
 
     // Start the thread in snakeEngine
     @Override
     protected void onResume() {
         super.onResume();
+        mediaPlayer.start();
         snakeEngine.resume();
     }
 
@@ -50,6 +59,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        mediaPlayer.stop();
+        mediaPlayer.release();
         snakeEngine.pause();
     }
 }
