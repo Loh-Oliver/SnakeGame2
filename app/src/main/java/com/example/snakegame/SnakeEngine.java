@@ -311,14 +311,15 @@ class SnakeEngine extends SurfaceView implements Runnable {
                     paint);
 
             // Draw the score
+            paint.setColor(Color.WHITE);
             paint.setTextSize(90);
             canvas.drawText("Score:" + score, 10, 70, paint);
 
             // Draw the "L" and "R" buttons
-            paint.setColor(Color.WHITE);
+
             paint.setTextSize(120); // Increase text size for bigger buttons
             canvas.drawText("L", screenX / 4 - 60, playingAreaBottom + 200, paint);
-            canvas.drawText("R", screenX * 3 / 4 - 60, playingAreaBottom + 200, paint);
+            canvas.drawText("R", screenX * 3 / 4 - 20, playingAreaBottom + 200, paint);
 
             // Unlock the canvas and reveal the graphics for this frame
             surfaceHolder.unlockCanvasAndPost(canvas);
