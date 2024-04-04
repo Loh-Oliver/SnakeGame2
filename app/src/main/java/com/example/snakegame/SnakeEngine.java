@@ -1,5 +1,6 @@
 package com.example.snakegame;
 
+import android.os.Vibrator;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Point;
@@ -22,7 +23,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
     // To hold a reference to the Activity
     private Context context;
 
-    // for plaing sound effects
+    // for playing sound effects
     private SoundPool soundPool;
     private int eat_bob = -1;
     private int snake_crash = -1;
@@ -47,19 +48,19 @@ class SnakeEngine extends SurfaceView implements Runnable {
     private int blockSize;
 
     // The size in segments of the playable area
-    private final int NUM_BLOCKS_WIDE = 40;
+    private final int NUM_BLOCKS_WIDE = 20;
     private int numBlocksHigh;
 
     // Control pausing between updates
     private long nextFrameTime;
     // Update the game 10 times per second
-    private final long FPS = 10;
+    private final long FPS = 15;
     // There are 1000 milliseconds in a second
     private final long MILLIS_PER_SECOND = 1000;
 // We will draw the frame much more often
 
     // How many points does the player have
-    private int score;
+    private volatile int score;
 
     // The location in the grid of all the segments
     private int[] snakeXs;
@@ -78,18 +79,22 @@ class SnakeEngine extends SurfaceView implements Runnable {
     // Some paint for our canvas
     private Paint paint;
 
+    // Declare Vibrator object
+    private Vibrator vibrator;
 
     public SnakeEngine(Context context, Point size) {
         super(context);
 
-        context = context;
+        // Initialize Vibrator
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-        screenX = size.x;
-        screenY = size.y;
+        // Choose the minimum of width and height as the screen size to make the playing area square
+        screenX = Math.min(size.x, size.y);
+        screenY = screenX; // Set the height equal to the width
 
         // Work out how many pixels each block is
         blockSize = screenX / NUM_BLOCKS_WIDE;
-        // How many blocks of the same size will fit into the height
+        // Calculate the number of blocks high to maintain aspect ratio
         numBlocksHigh = screenY / blockSize;
 
         // Set the sound up
@@ -111,7 +116,6 @@ class SnakeEngine extends SurfaceView implements Runnable {
             // Error
         }
 
-
         // Initialize the drawing objects
         surfaceHolder = getHolder();
         paint = new Paint();
@@ -122,7 +126,6 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
         // Start the game
         newGame();
-
     }
 
     @Override
@@ -170,6 +173,10 @@ class SnakeEngine extends SurfaceView implements Runnable {
         nextFrameTime = System.currentTimeMillis();
     }
 
+    public synchronized void addScore() {
+        score = score + 1;
+    }
+
     public void spawnBob() {
         Random random = new Random();
         bobX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
@@ -184,8 +191,9 @@ class SnakeEngine extends SurfaceView implements Runnable {
         // This reminds me of Edge of Tomorrow. Oneday Bob will be ready!
         spawnBob();
         //add to the score
-        score = score + 1;
+        addScore();
         soundPool.play(eat_bob, 1, 1, 0, 0, 1);
+        vibrator.vibrate(500);
     }
 
     private void moveSnake(){
@@ -262,8 +270,9 @@ class SnakeEngine extends SurfaceView implements Runnable {
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
 
-            // Fill the screen with Game Code School blue
-            canvas.drawColor(Color.argb(255, 26, 128, 182));
+            // Fill the screen with the color of your choice for the playing area
+            paint.setColor(Color.BLUE); // Change Color.BLUE to your desired color
+            canvas.drawRect(0, 0, screenX, screenY, paint);
 
             // Set the color of the paint to draw the snake white
             paint.setColor(Color.argb(255, 255, 255, 255));
