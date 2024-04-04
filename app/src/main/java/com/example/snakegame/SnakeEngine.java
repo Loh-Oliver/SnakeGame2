@@ -1,5 +1,6 @@
 package com.example.snakegame;
 
+import android.os.Vibrator;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Point;
@@ -78,9 +79,14 @@ class SnakeEngine extends SurfaceView implements Runnable {
     // Some paint for our canvas
     private Paint paint;
 
+    // Declare Vibrator object
+    private Vibrator vibrator;
 
     public SnakeEngine(Context context, Point size) {
         super(context);
+
+        // Initialize Vibrator
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
         context = context;
 
@@ -186,6 +192,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
         //add to the score
         score = score + 1;
         soundPool.play(eat_bob, 1, 1, 0, 0, 1);
+        vibrator.vibrate(500);
     }
 
     private void moveSnake(){
