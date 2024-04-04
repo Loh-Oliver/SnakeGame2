@@ -259,7 +259,6 @@ class SnakeEngine extends SurfaceView implements Runnable {
         if (detectDeath()) {
             //start again
             soundPool.play(snake_crash, 1, 1, 0, 0, 1);
-
             newGame();
         }
     }
