@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Snake Game</string>
+    <string name="play_now">Play Now</string>
 </resources>
