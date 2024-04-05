@@ -10,7 +10,13 @@ public class Score {
     // Method to increase the score
     public void increaseScore() {
         synchronized (lock) {
-            score = score + 1;
+            score += 1;
+        }
+    }
+
+    public void decreaseScore() {
+        synchronized (lock) {
+            score -= 1;
         }
     }
 

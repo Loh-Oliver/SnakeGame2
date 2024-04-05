@@ -208,6 +208,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
         addScore();
 //        soundPool.play(eat_bob, 1, 1, 0, 0, 1);
         vibrator.vibrate(500);
+        survivalEngine.restart();
     }
 
     private void moveSnake(){
@@ -263,28 +264,6 @@ class SnakeEngine extends SurfaceView implements Runnable {
     }
 
 
-
-    public void update() {
-        // Did the head of the snake eat Bob?
-        if (snakeXs[0] == bobX && snakeYs[0] == bobY) {
-            eatBob();
-        }
-
-        moveSnake();
-
-        if (detectDeath()) {
-            //start again
-
-//            soundPool.play(snake_crash, 1, 1, 0, 0, 1);
-
-
-            soundPool.play(snake_crash, 1, 1, 0, 0, 1);
-
-            newGame();
-        }
-    }
-
-
     public void draw() {
         // Get a lock on the canvas
         if (surfaceHolder.getSurface().isValid()) {
@@ -333,6 +312,29 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
             // Unlock the canvas and reveal the graphics for this frame
             surfaceHolder.unlockCanvasAndPost(canvas);
+        }
+    }
+
+    public void update() {
+        // Did the head of the snake eat Bob?
+        if (snakeXs[0] == bobX && snakeYs[0] == bobY) {
+            eatBob();
+        }
+
+        moveSnake();
+
+        if (detectDeath()) {
+            //start again
+            soundPool.play(snake_crash, 1, 1, 0, 0, 1);
+
+            newGame();
+        }
+
+        snakeLength = Math.max(1, scoreManager.getScore() + 1);
+        if (scoreManager.getScore() < 0) {
+            // Restart the game if score turns negative
+            soundPool.play(snake_crash, 1, 1, 0, 0, 1);
+            newGame();
         }
     }
 
