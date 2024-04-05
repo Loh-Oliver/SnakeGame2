@@ -2,11 +2,15 @@ package com.example.snakegame;
 import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -33,6 +37,18 @@ public class MainActivity extends Activity {
 
     }
 
+    public void hideStatusBar() {
+        // Hide the status bar using WindowInsetsController on Android 11 (API 30) and higher
+        WindowInsetsController insetsController = getWindow().getInsetsController();
+        if (insetsController != null) {
+            insetsController.hide(WindowInsets.Type.statusBars());
+        }
+        // Keep the screen always on
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+
+
     public void play(View view) {
         // Initialize the result into a Point object
         Point size = new Point();
@@ -42,7 +58,7 @@ public class MainActivity extends Activity {
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.crazyfrog);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
-
+        hideStatusBar();
         setContentView(snakeEngine);
         snakeEngine.resume();
         snakeEngine.newGame();
