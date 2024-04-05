@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
         // Create a new instance of the SnakeEngine class
         snakeEngine = new SnakeEngine(this, size);
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.crazyfrog);
+        mediaPlayer.setLooping(true);
         mediaPlayer.start();
 
         setContentView(snakeEngine);
