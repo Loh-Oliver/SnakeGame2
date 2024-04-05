@@ -1,73 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+
+<!-- transparent_overlay.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@android:color/transparent">
 
-    <!-- GIF ImageView as background -->
-    <pl.droidsonroids.gif.GifImageView
+
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/start_background" />
-
-    <!-- LinearLayout for buttons and text -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <!-- This View will push the buttons and text to the bottom of the layout -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <!-- ImageButton -->
-        <Button
-            android:id="@+id/myButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/play_again"
-            android:textSize="16sp"
-            android:textColor="@android:color/white"
-            android:background="@android:color/holo_purple"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:layout_margin="8dp"
-            android:onClick="play" />
-
-        <Button
-            android:id="@+id/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quit"
-            android:textSize="16sp"
-            android:textColor="@android:color/white"
-            android:background="@android:color/holo_purple"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:layout_margin="8dp"
-            android:onClick="Quit" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:background="@android:color/transparent"
+        android:elevation="8dp">
 
 
-        <!-- TextView -->
+
+
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:onClick="play"
-            android:textColor="@android:color/holo_blue_bright"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:gravity="center"
+            android:text="Your game is over. What would you like to do?"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:padding="16dp" />
 
-    </LinearLayout>
 
-</FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/tvMessage"
+            android:layout_marginTop="16dp">
+
+
+
+
+            <Button
+                android:id="@+id/btnPlayAgain"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Play Again"
+                android:onClick="play" />
+
+
+
+
+            <Button
+                android:id="@+id/btnQuit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Quit"
+                android:onClick="quit" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>
