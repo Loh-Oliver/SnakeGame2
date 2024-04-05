@@ -2,28 +2,19 @@ package com.example.snakegame;
 import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
-import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
 
 
-
-public class MainActivity extends Activity implements SnakeEngine.SnakeDeathListener {
+public class MainActivity extends Activity implements TrainGame.SnakeDeathListener {
 
     // Declare an instance of SnakeEngine
-    SnakeEngine snakeEngine;
+    TrainGame snakeEngine;
     MediaPlayer mediaPlayer;
     Display display;
 
@@ -63,8 +54,9 @@ public class MainActivity extends Activity implements SnakeEngine.SnakeDeathList
         Point size = new Point();
         display.getSize(size);
         // Create a new instance of the SnakeEngine class
-        snakeEngine = new SnakeEngine(this, size);
+        snakeEngine = new TrainGame(this, size);
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.crazyfrog);
+        mediaPlayer.setVolume(0.25f, 0.25f);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
         hideStatusBar();

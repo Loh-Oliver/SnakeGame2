@@ -1,7 +1,7 @@
 package com.example.snakegame;
 
-public class SurvivalEngine implements Runnable {
-    private static final int POINTS_INTERVAL = 5000; // 10 seconds
+public class PassengerDecay implements Runnable {
+    private static final int POINTS_INTERVAL = 7000; // 7 seconds
     private static final int POINTS_PER_INTERVAL = 1; // Points to decrease per interval
     private static final Object lock = new Object();
 
@@ -10,7 +10,7 @@ public class SurvivalEngine implements Runnable {
     Score score;
     Thread thread;
 
-    public SurvivalEngine(Score score) {
+    public PassengerDecay(Score score) {
         this.score = score;
     }
 

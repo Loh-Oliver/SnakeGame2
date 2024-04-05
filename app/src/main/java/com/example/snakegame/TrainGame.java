@@ -6,7 +6,6 @@ import android.os.Vibrator;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Point;
-import android.media.AudioManager;
 import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,7 +16,7 @@ import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-class SnakeEngine extends SurfaceView implements Runnable {
+class TrainGame extends SurfaceView implements Runnable {
 
     // Our game thread for the main game loop
     private Thread thread = null;
@@ -65,7 +64,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
     private Score scoreManager;
 
     // survival
-    private SurvivalEngine survivalEngine;
+    private PassengerDecay survivalEngine;
 
     // The location in the grid of all the segments
     private int[] snakeXs;
@@ -88,7 +87,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
     private Vibrator vibrator;
 
 
-    public SnakeEngine(Context context, Point size) {
+    public TrainGame(Context context, Point size) {
 
         super(context);
 
@@ -150,7 +149,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-        survivalEngine = new SurvivalEngine(scoreManager);
+        survivalEngine = new PassengerDecay(scoreManager);
         survivalEngine.start();
         while (isPlaying) {
             // Update 10 times a second
@@ -212,7 +211,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
         spawnBob();
         //add to the score
         addScore();
-//        soundPool.play(eat_bob, 1, 1, 0, 0, 1);
+        soundPool.play(eat_bob, 1.5f, 1.5f, 0, 0, 1);
         vibrator.vibrate(500);
         survivalEngine.restart();
     }
@@ -344,7 +343,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
         if (detectDeath()) {
             //start again
-            soundPool.play(snake_crash, 1, 1, 0, 0, 1);
+            soundPool.play(snake_crash, 3, 3, 0, 0, 1);
 
            // newGame();
             if (deathListener != null) {
@@ -355,12 +354,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
         snakeLength = Math.max(1, scoreManager.getScore() + 1);
         if (scoreManager.getScore() < 0) {
             // Restart the game if score turns negative
-            soundPool.play(snake_crash, 1, 1, 0, 0, 1);
-            try {
-                Thread.sleep(2000); // Sleep for 2 seconds
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            soundPool.play(snake_crash, 3, 3, 0, 0, 1);
            // newGame();
             if (deathListener != null) {
                 deathListener.onSnakeDeath();
