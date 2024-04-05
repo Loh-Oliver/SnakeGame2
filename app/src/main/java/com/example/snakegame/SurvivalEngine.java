@@ -26,7 +26,7 @@ public class SurvivalEngine implements Runnable {
     @Override
     public void run() {
         try {
-            Thread.sleep(INITIAL_DELAY); // Initial delay before adding points
+//            Thread.sleep(INITIAL_DELAY); // Initial delay before adding points
             while (isRunning) {
                 Thread.sleep(POINTS_INTERVAL); // Wait for the interval
                 score.increaseScore();

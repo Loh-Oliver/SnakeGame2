@@ -146,6 +146,8 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
+        survivalEngine = new SurvivalEngine(scoreManager);
+        survivalEngine.start();
         while (isPlaying) {
             // Update 10 times a second
             if(updateRequired()) {
