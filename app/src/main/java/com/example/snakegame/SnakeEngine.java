@@ -253,6 +253,8 @@ class SnakeEngine extends SurfaceView implements Runnable {
         return dead;
     }
 
+
+
     public void update() {
         // Did the head of the snake eat Bob?
         if (snakeXs[0] == bobX && snakeYs[0] == bobY) {
@@ -285,7 +287,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
             int playingAreaTop = 200; // Adjust this value to shift the playing area lower
             int playingAreaRight = screenX;
             int playingAreaBottom = screenY + 200; // Adjust this value to shift the playing area lower
-            paint.setColor(Color.GREEN); // Change Color.BLUE to your desired color
+            paint.setColor(Color.argb(255, 150, 75, 0));
             canvas.drawRect(playingAreaLeft, playingAreaTop, playingAreaRight, playingAreaBottom, paint);
 
             // Draw the snake
@@ -299,7 +301,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
             }
 
             // Draw Bob
-            paint.setColor(Color.argb(255, 255, 0, 0));
+            paint.setColor(Color.argb(255, 255, 253, 208));
             canvas.drawRect(bobX * blockSize,
                     (bobY * blockSize) + playingAreaTop,
                     (bobX * blockSize) + blockSize,
@@ -310,7 +312,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
             paint.setColor(Color.WHITE);
             paint.setTextSize(90);
             paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD)); // Set bold typeface
-            String scoreText = "Score: " + score;
+            String scoreText = "Passenger: " + score;
             float textWidth = paint.measureText(scoreText); // Measure text width to center it
             canvas.drawText(scoreText, (screenX - textWidth) / 2, 150, paint);
 

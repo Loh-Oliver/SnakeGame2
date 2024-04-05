@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
         // Get the pixel dimensions of the screen
         display = getWindowManager().getDefaultDisplay();
         setContentView(R.layout.activity_main);
+
     }
 
     public void play(View view) {
@@ -38,8 +39,8 @@ public class MainActivity extends Activity {
         display.getSize(size);
         // Create a new instance of the SnakeEngine class
         snakeEngine = new SnakeEngine(this, size);
-//        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.crazyfrog);
-//        mediaPlayer.start();
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.crazyfrog);
+        mediaPlayer.start();
 
         setContentView(snakeEngine);
         snakeEngine.resume();
@@ -50,9 +51,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-//        mediaPlayer.start();
+
         if (snakeEngine != null) {
             snakeEngine.resume();
+             mediaPlayer.start();
         }
     }
 
@@ -60,10 +62,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-//        mediaPlayer.pause();
+
 //        mediaPlayer.release();
         if (snakeEngine != null) {
             snakeEngine.pause();
+            mediaPlayer.pause();
         }
     }
 }
