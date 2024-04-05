@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements SnakeEngine.SnakeDeathList
         // For example, return to MainActivity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        finish(); // Finish SnakeEngine activity
+       // finish(); // Finish SnakeEngine activity
     }
 
     public void hideStatusBar() {

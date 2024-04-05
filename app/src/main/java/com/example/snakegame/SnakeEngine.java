@@ -361,7 +361,10 @@ class SnakeEngine extends SurfaceView implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            newGame();
+           // newGame();
+            if (deathListener != null) {
+                deathListener.onSnakeDeath();
+            }
         }
     }
 
