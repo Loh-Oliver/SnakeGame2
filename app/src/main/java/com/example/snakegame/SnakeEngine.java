@@ -87,8 +87,12 @@ class SnakeEngine extends SurfaceView implements Runnable {
     // Declare Vibrator object
     private Vibrator vibrator;
 
+
     public SnakeEngine(Context context, Point size) {
+
         super(context);
+
+
 
         // Initialize Vibrator
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -199,6 +203,8 @@ class SnakeEngine extends SurfaceView implements Runnable {
         bobY = random.nextInt(numBlocksHigh - 1) + 1;
     }
 
+
+
     private void eatBob(){
         // Increase the size of the snake
         snakeLength++;
@@ -243,6 +249,18 @@ class SnakeEngine extends SurfaceView implements Runnable {
         }
     }
 
+    public interface SnakeDeathListener {
+        void onSnakeDeath();
+    }
+
+    // Add a member variable to hold the listener reference
+    private SnakeDeathListener deathListener;
+
+    // Setter method for the listener
+    public void setSnakeDeathListener(SnakeDeathListener listener) {
+        this.deathListener = listener;
+    }
+
     private boolean detectDeath(){
         // Has the snake died?
         boolean dead = false;
@@ -256,6 +274,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
         // Eaten itself?
         for (int i = snakeLength - 1; i > 0; i--) {
             if ((snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
+
                 dead = true;
             }
         }
@@ -327,13 +346,21 @@ class SnakeEngine extends SurfaceView implements Runnable {
             //start again
             soundPool.play(snake_crash, 1, 1, 0, 0, 1);
 
-            newGame();
+           // newGame();
+            if (deathListener != null) {
+                deathListener.onSnakeDeath();
+            }
         }
 
         snakeLength = Math.max(1, scoreManager.getScore() + 1);
         if (scoreManager.getScore() < 0) {
             // Restart the game if score turns negative
             soundPool.play(snake_crash, 1, 1, 0, 0, 1);
+            try {
+                Thread.sleep(2000); // Sleep for 2 seconds
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             newGame();
         }
     }

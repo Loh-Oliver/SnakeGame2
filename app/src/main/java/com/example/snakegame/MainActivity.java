@@ -20,7 +20,7 @@ import androidx.core.view.ViewCompat;
 
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SnakeEngine.SnakeDeathListener {
 
     // Declare an instance of SnakeEngine
     SnakeEngine snakeEngine;
@@ -35,6 +35,15 @@ public class MainActivity extends Activity {
         display = getWindowManager().getDefaultDisplay();
         setContentView(R.layout.activity_main);
 
+    }
+
+
+    public void onSnakeDeath() {
+        // Handle snake death here
+        // For example, return to MainActivity
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Finish SnakeEngine activity
     }
 
     public void hideStatusBar() {
@@ -62,6 +71,8 @@ public class MainActivity extends Activity {
         setContentView(snakeEngine);
         snakeEngine.resume();
         snakeEngine.newGame();
+        // Set the death listener
+        snakeEngine.setSnakeDeathListener(this);
     }
 
     // Start the thread in snakeEngine
