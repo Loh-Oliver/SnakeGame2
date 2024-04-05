@@ -1,5 +1,6 @@
 package com.example.snakegame;
 
+import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.os.Vibrator;
 import android.content.Context;
@@ -118,7 +119,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
             descriptor = assetManager.openFd("pick_up_MRT.ogg");
             eat_bob = soundPool.load(descriptor, 0);
 
-            descriptor = assetManager.openFd("MRT_crash.ogg");
+            descriptor = assetManager.openFd("CrashSound.ogg");
             snake_crash = soundPool.load(descriptor, 0);
 
         } catch (IOException e) {
@@ -190,11 +191,9 @@ class SnakeEngine extends SurfaceView implements Runnable {
     }
 
     private void eatBob(){
-        //  Got him!
         // Increase the size of the snake
         snakeLength++;
         //replace Bob
-        // This reminds me of Edge of Tomorrow. Oneday Bob will be ready!
         spawnBob();
         //add to the score
         addScore();
@@ -292,11 +291,11 @@ class SnakeEngine extends SurfaceView implements Runnable {
             // Draw the snake
             paint.setColor(Color.argb(255, 255, 255, 255));
             for (int i = 0; i < snakeLength; i++) {
-                canvas.drawRect(snakeXs[i] * blockSize,
+                canvas.drawRoundRect(snakeXs[i] * blockSize,
                         (snakeYs[i] * blockSize) + playingAreaTop,
                         (snakeXs[i] * blockSize) + blockSize,
                         (snakeYs[i] * blockSize) + blockSize + playingAreaTop,
-                        paint);
+                        20,20, paint);
             }
 
             // Draw Bob
@@ -310,7 +309,10 @@ class SnakeEngine extends SurfaceView implements Runnable {
             // Draw the score
             paint.setColor(Color.WHITE);
             paint.setTextSize(90);
-            canvas.drawText("Score:" + score, 10, 70, paint);
+            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD)); // Set bold typeface
+            String scoreText = "Score: " + score;
+            float textWidth = paint.measureText(scoreText); // Measure text width to center it
+            canvas.drawText(scoreText, (screenX - textWidth) / 2, 150, paint);
 
             // Draw the "L" and "R" buttons
 
