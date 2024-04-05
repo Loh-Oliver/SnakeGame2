@@ -8,7 +8,7 @@ public class SurvivalEngine implements Runnable {
 
     private boolean isRunning = false;
 
-    Score score = new Score();
+    Score score;
 
     public SurvivalEngine(Score score) {
         this.score = score;

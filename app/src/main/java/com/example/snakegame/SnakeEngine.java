@@ -62,7 +62,10 @@ class SnakeEngine extends SurfaceView implements Runnable {
 // We will draw the frame much more often
 
     // How many points does the player have
-    private volatile int score;
+    private Score scoreManager;
+
+    // survival
+    private SurvivalEngine survivalEngine;
 
     // The location in the grid of all the segments
     private int[] snakeXs;
@@ -136,6 +139,9 @@ class SnakeEngine extends SurfaceView implements Runnable {
         snakeXs = new int[200];
         snakeYs = new int[200];
 
+        // initialize score
+        scoreManager = new Score();
+
     }
 
     @Override
@@ -153,6 +159,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
         isPlaying = false;
         try {
             thread.join();
+            survivalEngine.stop();
         } catch (InterruptedException e) {
             // Error
         }
@@ -174,14 +181,14 @@ class SnakeEngine extends SurfaceView implements Runnable {
         spawnBob();
 
         // Reset the score
-        score = 0;
+        scoreManager.resetScore();
 
         // Setup nextFrameTime so an update is triggered
         nextFrameTime = System.currentTimeMillis();
     }
 
     public synchronized void addScore() {
-        score = score + 1;
+        scoreManager.increaseScore();
     }
 
     public void spawnBob() {
@@ -312,7 +319,7 @@ class SnakeEngine extends SurfaceView implements Runnable {
             paint.setColor(Color.WHITE);
             paint.setTextSize(90);
             paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD)); // Set bold typeface
-            String scoreText = "Passenger: " + score;
+            String scoreText = "Passenger: " + scoreManager.getScore();
             float textWidth = paint.measureText(scoreText); // Measure text width to center it
             canvas.drawText(scoreText, (screenX - textWidth) / 2, 150, paint);
 

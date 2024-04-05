@@ -14,6 +14,12 @@ public class Score {
         }
     }
 
+    public void resetScore() {
+        synchronized (lock) {
+            score = 0;
+        }
+    }
+
     // Method to retrieve the score
     public int getScore() {
             return score;
