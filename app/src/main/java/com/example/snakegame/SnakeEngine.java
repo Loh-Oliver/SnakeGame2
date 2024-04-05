@@ -139,15 +139,12 @@ class SnakeEngine extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-
         while (isPlaying) {
-
             // Update 10 times a second
             if(updateRequired()) {
                 update();
                 draw();
             }
-
         }
     }
 

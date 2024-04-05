@@ -30,20 +30,19 @@ public class MainActivity extends Activity {
         // Get the pixel dimensions of the screen
         display = getWindowManager().getDefaultDisplay();
         setContentView(R.layout.activity_main);
-        // Initialize the result into a Point object
-        Point size = new Point();
-        display.getSize(size);
-
-        // Create a new instance of the SnakeEngine class
-        snakeEngine = new SnakeEngine(this, size);
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.crazyfrog);
-
-        mediaPlayer.start();
-
     }
 
     public void play(View view) {
+        // Initialize the result into a Point object
+        Point size = new Point();
+        display.getSize(size);
+        // Create a new instance of the SnakeEngine class
+        snakeEngine = new SnakeEngine(this, size);
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.crazyfrog);
+        mediaPlayer.start();
+
         setContentView(snakeEngine);
+        snakeEngine.resume();
         snakeEngine.newGame();
     }
 
@@ -51,16 +50,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        mediaPlayer.start();
-        snakeEngine.resume();
+//        mediaPlayer.start();
+//        snakeEngine.resume();
     }
 
     // Stop the thread in snakeEngine
     @Override
     protected void onPause() {
         super.onPause();
-        mediaPlayer.stop();
-        mediaPlayer.release();
+        mediaPlayer.pause();
+//        mediaPlayer.release();
         snakeEngine.pause();
     }
 }
