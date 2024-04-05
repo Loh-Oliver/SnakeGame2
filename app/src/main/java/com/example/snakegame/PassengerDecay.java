@@ -7,6 +7,10 @@ public class PassengerDecay implements Runnable {
 
     private boolean isRunning = false;
 
+    private long decayStart;
+
+    float timeRatio;
+
     Score score;
     Thread thread;
 
@@ -34,11 +38,19 @@ public class PassengerDecay implements Runnable {
     public void run() {
         try {
             while (isRunning) {
+                decayStart = System.currentTimeMillis();
                 Thread.sleep(POINTS_INTERVAL); // Wait for the interval
                 score.decreaseScore();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public float getTimeRatio() {
+        long timeElapsed = System.currentTimeMillis() - decayStart;
+        long timeLeft = POINTS_INTERVAL - timeElapsed;
+        timeRatio = (float) timeLeft / POINTS_INTERVAL * 100;
+        return timeRatio;
     }
 }
