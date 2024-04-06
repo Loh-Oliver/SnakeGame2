@@ -2,7 +2,7 @@
 
 ## Description
 
-Train rush is a simple Android application, inspired by the original snake game, where players could control the train to collect passengers while avoiding crashing into walls or the train itself. To run on Android Studio, we target Android API level 33. Please configure the virtual simulator device to match this API.
+Train rush is a simple Android application, inspired by the original snake game, where players could control the train to collect passengers while avoiding crashing into walls or the train itself. To run on Android Studio, we target Android API level 34 (Minimum 33). Please configure the virtual simulator device to match this API.
 
 ## Controls
 |Control | Description |
