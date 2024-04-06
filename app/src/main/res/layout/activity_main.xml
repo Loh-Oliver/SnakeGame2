@@ -27,15 +27,22 @@
         <!-- ImageButton -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="2dp"
             android:layout_weight="1" />
+
         <TextView
             android:id="@+id/myText"
-            android:text="2100 Singapore"
+            android:text="Train Rush"
             android:textSize="30sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/holo_purple"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="354dp"
+            android:layout_weight="1" />
+
         <Button
             android:id="@+id/myButton"
             android:layout_width="wrap_content"
