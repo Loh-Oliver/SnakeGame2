@@ -294,7 +294,7 @@ class TrainGame extends SurfaceView implements Runnable {
             paint.setColor(Color.argb(255, 150, 75, 0));
             canvas.drawRect(playingAreaLeft, playingAreaTop, playingAreaRight, playingAreaBottom, paint);
 
-            // Draw the snake
+            // Draw the train
             paint.setColor(Color.argb(255, 255, 255, 255));
             for (int i = 0; i < trainLength; i++) {
                 canvas.drawRoundRect(trainXs[i] * blockSize,
