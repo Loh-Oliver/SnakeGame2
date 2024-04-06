@@ -3,7 +3,6 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.app.Activity;
 import android.view.View;
@@ -15,10 +14,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 
-public class MainActivity extends Activity implements TrainGame.SnakeDeathListener {
+public class MainActivity extends Activity implements TrainGame.TrainDeathListener {
 
     // Declare an instance of SnakeEngine
-    TrainGame snakeEngine;
+    TrainGame trainEngine;
     MediaPlayer mediaPlayer;
     Display display;
 
@@ -41,7 +40,7 @@ public class MainActivity extends Activity implements TrainGame.SnakeDeathListen
 
 
 
-    public void onSnakeDeath() {
+    public void onTrainDeath() {
         // Handle snake death here
         // For example, return to MainActivity
         Intent intent = new Intent(this, EndingActivity.class);
@@ -64,17 +63,17 @@ public class MainActivity extends Activity implements TrainGame.SnakeDeathListen
         Point size = new Point();
         display.getSize(size);
         // Create a new instance of the SnakeEngine class
-        snakeEngine = new TrainGame(this, size);
+        trainEngine = new TrainGame(this, size);
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.crazyfrog);
         mediaPlayer.setVolume(0.25f, 0.25f);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
         hideStatusBar();
-        setContentView(snakeEngine);
-        snakeEngine.resume();
-        snakeEngine.newGame();
+        setContentView(trainEngine);
+        trainEngine.resume();
+        trainEngine.newGame();
         // Set the death listener
-        snakeEngine.setSnakeDeathListener(this);
+        trainEngine.setTrainDeathListener(this);
     }
 
     // Start the thread in snakeEngine
@@ -82,8 +81,8 @@ public class MainActivity extends Activity implements TrainGame.SnakeDeathListen
     protected void onResume() {
         super.onResume();
 
-        if (snakeEngine != null) {
-            snakeEngine.resume();
+        if (trainEngine != null) {
+            trainEngine.resume();
              mediaPlayer.start();
         }
     }
@@ -94,8 +93,8 @@ public class MainActivity extends Activity implements TrainGame.SnakeDeathListen
         super.onPause();
 
 //        mediaPlayer.release();
-        if (snakeEngine != null) {
-            snakeEngine.pause();
+        if (trainEngine != null) {
+            trainEngine.pause();
             mediaPlayer.pause();
         }
     }

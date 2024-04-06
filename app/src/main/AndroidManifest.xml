@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SnakeEngine"
+            android:name=".TrainGame"
             android:exported="true"
             android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait" />

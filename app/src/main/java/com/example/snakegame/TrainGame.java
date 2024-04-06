@@ -1,7 +1,5 @@
 package com.example.snakegame;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.os.Vibrator;
@@ -28,8 +26,8 @@ class TrainGame extends SurfaceView implements Runnable {
 
     // for playing sound effects
     private SoundPool soundPool;
-    private int eat_bob = -1;
-    private int snake_crash = -1;
+    private int pick_passenger = -1;
+    private int train_crash = -1;
 
     // For tracking movement Heading
     public enum Heading {UP, RIGHT, DOWN, LEFT}
@@ -40,14 +38,14 @@ class TrainGame extends SurfaceView implements Runnable {
     private int screenX;
     private int screenY;
 
-    // How long is the snake
-    private int snakeLength;
+    // How long is the train
+    private int trainLength;
 
     // Where is Bob hiding?
     private int bobX;
     private int bobY;
 
-    // The size in pixels of a snake segment
+    // The size in pixels of a train segment
     private int blockSize;
 
     // The size in segments of the playable area
@@ -69,8 +67,8 @@ class TrainGame extends SurfaceView implements Runnable {
     private PassengerDecay survivalEngine;
 
     // The location in the grid of all the segments
-    private int[] snakeXs;
-    private int[] snakeYs;
+    private int[] trainXs;
+    private int[] trainYs;
 
     // Everything we need for drawing
 // Is the game currently playing?
@@ -92,8 +90,6 @@ class TrainGame extends SurfaceView implements Runnable {
     public TrainGame(Context context, Point size) {
 
         super(context);
-
-
 
         // Initialize Vibrator
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -125,10 +121,10 @@ class TrainGame extends SurfaceView implements Runnable {
 
             // Prepare the two sounds in memory
             descriptor = assetManager.openFd("pick_up_MRT.ogg");
-            eat_bob = soundPool.load(descriptor, 0);
+            pick_passenger = soundPool.load(descriptor, 0);
 
             descriptor = assetManager.openFd("CrashSound.ogg");
-            snake_crash = soundPool.load(descriptor, 0);
+            train_crash = soundPool.load(descriptor, 0);
 
         } catch (IOException e) {
             // Error
@@ -141,8 +137,8 @@ class TrainGame extends SurfaceView implements Runnable {
         paint = new Paint();
 
         // If you score 200 you are rewarded with a crash achievement!
-        snakeXs = new int[200];
-        snakeYs = new int[200];
+        trainXs = new int[200];
+        trainYs = new int[200];
 
         // initialize score
         scoreManager = new Score();
@@ -179,13 +175,13 @@ class TrainGame extends SurfaceView implements Runnable {
     }
 
     public void newGame() {
-        // Start with a single snake segment
-        snakeLength = 1;
-        snakeXs[0] = NUM_BLOCKS_WIDE / 2;
-        snakeYs[0] = numBlocksHigh / 2;
+        // Start with a single train segment
+        trainLength = 1;
+        trainXs[0] = NUM_BLOCKS_WIDE / 2;
+        trainYs[0] = numBlocksHigh / 2;
 
-        // Get Bob ready for dinner
-        spawnBob();
+        // Get Passenger ready to be picked up
+        spawnPassenger();
 
         // Reset the score
         scoreManager.resetScore();
@@ -198,7 +194,7 @@ class TrainGame extends SurfaceView implements Runnable {
         scoreManager.increaseScore();
     }
 
-    public void spawnBob() {
+    public void spawnPassenger() {
         Random random = new Random();
         bobX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
         bobY = random.nextInt(numBlocksHigh - 1) + 1;
@@ -206,25 +202,25 @@ class TrainGame extends SurfaceView implements Runnable {
 
 
 
-    private void eatBob(){
+    private void pickPassenger(){
         // Increase the size of the snake
-        snakeLength++;
+        trainLength++;
         //replace Bob
-        spawnBob();
+        spawnPassenger();
         //add to the score
         addScore();
-        soundPool.play(eat_bob, 1.5f, 1.5f, 0, 0, 1);
+        soundPool.play(pick_passenger, 1.5f, 1.5f, 0, 0, 1);
         vibrator.vibrate(500);
         survivalEngine.restart();
     }
 
-    private void moveSnake(){
+    private void moveTrain(){
         // Move the body
-        for (int i = snakeLength; i > 0; i--) {
+        for (int i = trainLength; i > 0; i--) {
             // Start at the back and move it
             // to the position of the segment in front of it
-            snakeXs[i] = snakeXs[i - 1];
-            snakeYs[i] = snakeYs[i - 1];
+            trainXs[i] = trainXs[i - 1];
+            trainYs[i] = trainYs[i - 1];
 
             // Exclude the head because
             // the head has nothing in front of it
@@ -233,48 +229,48 @@ class TrainGame extends SurfaceView implements Runnable {
         // Move the head in the appropriate heading
         switch (heading) {
             case UP:
-                snakeYs[0]--;
+                trainYs[0]--;
                 break;
 
             case RIGHT:
-                snakeXs[0]++;
+                trainXs[0]++;
                 break;
 
             case DOWN:
-                snakeYs[0]++;
+                trainYs[0]++;
                 break;
 
             case LEFT:
-                snakeXs[0]--;
+                trainXs[0]--;
                 break;
         }
     }
 
-    public interface SnakeDeathListener {
-        void onSnakeDeath();
+    public interface TrainDeathListener {
+        void onTrainDeath();
     }
 
     // Add a member variable to hold the listener reference
-    private SnakeDeathListener deathListener;
+    private TrainDeathListener deathListener;
 
     // Setter method for the listener
-    public void setSnakeDeathListener(SnakeDeathListener listener) {
+    public void setTrainDeathListener(TrainDeathListener listener) {
         this.deathListener = listener;
     }
 
     private boolean detectDeath(){
-        // Has the snake died?
+        // Has the train died?
         boolean dead = false;
 
         // Hit the screen edge
-        if (snakeXs[0] == -1) dead = true;
-        if (snakeXs[0] >= NUM_BLOCKS_WIDE) dead = true;
-        if (snakeYs[0] == -1) dead = true;
-        if (snakeYs[0] == numBlocksHigh) dead = true;
+        if (trainXs[0] == -1) dead = true;
+        if (trainXs[0] >= NUM_BLOCKS_WIDE) dead = true;
+        if (trainYs[0] == -1) dead = true;
+        if (trainYs[0] == numBlocksHigh) dead = true;
 
         // Eaten itself?
-        for (int i = snakeLength - 1; i > 0; i--) {
-            if ((snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
+        for (int i = trainLength - 1; i > 0; i--) {
+            if ((trainXs[0] == trainXs[i]) && (trainYs[0] == trainYs[i])) {
 
                 dead = true;
             }
@@ -300,11 +296,11 @@ class TrainGame extends SurfaceView implements Runnable {
 
             // Draw the snake
             paint.setColor(Color.argb(255, 255, 255, 255));
-            for (int i = 0; i < snakeLength; i++) {
-                canvas.drawRoundRect(snakeXs[i] * blockSize,
-                        (snakeYs[i] * blockSize) + playingAreaTop,
-                        (snakeXs[i] * blockSize) + blockSize,
-                        (snakeYs[i] * blockSize) + blockSize + playingAreaTop,
+            for (int i = 0; i < trainLength; i++) {
+                canvas.drawRoundRect(trainXs[i] * blockSize,
+                        (trainYs[i] * blockSize) + playingAreaTop,
+                        (trainXs[i] * blockSize) + blockSize,
+                        (trainYs[i] * blockSize) + blockSize + playingAreaTop,
                         20,20, paint);
             }
 
@@ -387,29 +383,29 @@ class TrainGame extends SurfaceView implements Runnable {
 
     public void update() {
         // Did the head of the snake eat Bob?
-        if (snakeXs[0] == bobX && snakeYs[0] == bobY) {
-            eatBob();
+        if (trainXs[0] == bobX && trainYs[0] == bobY) {
+            pickPassenger();
         }
 
-        moveSnake();
+        moveTrain();
 
         if (detectDeath()) {
             //start again
-            soundPool.play(snake_crash, 3, 3, 0, 0, 1);
+            soundPool.play(train_crash, 3, 3, 0, 0, 1);
 
            // newGame();
             if (deathListener != null) {
-                deathListener.onSnakeDeath();
+                deathListener.onTrainDeath();
             }
         }
 
-        snakeLength = Math.max(1, scoreManager.getScore() + 1);
+        trainLength = Math.max(1, scoreManager.getScore() + 1);
         if (scoreManager.getScore() < 0) {
             // Restart the game if score turns negative
-            soundPool.play(snake_crash, 3, 3, 0, 0, 1);
+            soundPool.play(train_crash, 3, 3, 0, 0, 1);
            // newGame();
             if (deathListener != null) {
-                deathListener.onSnakeDeath();
+                deathListener.onTrainDeath();
             }
         }
     }

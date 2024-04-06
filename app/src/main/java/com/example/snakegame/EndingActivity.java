@@ -1,13 +1,10 @@
 package com.example.snakegame;
 
 import android.content.Intent;
-import android.graphics.Point;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 
 
 import android.app.Activity;
-import android.view.Display;
 import android.view.View;
 
 
