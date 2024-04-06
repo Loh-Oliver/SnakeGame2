@@ -352,6 +352,8 @@ class TrainGame extends SurfaceView implements Runnable {
             float textWidth = paint.measureText(scoreText); // Measure text width to center it
             canvas.drawText(scoreText, (screenX - textWidth) / 2, 150, paint);
 
+            drawProgressBar(canvas, survivalEngine.getTimeRatio());
+
             // Draw the "L" and "R" buttons
 
             paint.setTextSize(120); // Increase text size for bigger buttons
@@ -361,6 +363,26 @@ class TrainGame extends SurfaceView implements Runnable {
             // Unlock the canvas and reveal the graphics for this frame
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
+    }
+
+    // Add a method to draw a progress bar
+    public void drawProgressBar(Canvas canvas, float progress) {
+        // Calculate the dimensions of the progress bar
+        int progressBarWidth = (int) (screenX * 0.8);
+        int progressBarHeight = 30;
+        int progressBarX = (screenX - progressBarWidth) / 2;
+        int progressBarY = 50;
+
+        // Draw the background of the progress bar
+        paint.setColor(Color.GRAY);
+        canvas.drawRect(progressBarX, progressBarY, progressBarX + progressBarWidth, progressBarY + progressBarHeight, paint);
+
+        // Calculate the filled portion of the progress bar based on the progress value
+        int filledWidth = (int) ((progress / 100.0) * progressBarWidth);
+
+        // Draw the filled portion of the progress bar
+        paint.setColor(Color.GREEN);
+        canvas.drawRect(progressBarX, progressBarY, progressBarX + filledWidth, progressBarY + progressBarHeight, paint);
     }
 
     public void update() {

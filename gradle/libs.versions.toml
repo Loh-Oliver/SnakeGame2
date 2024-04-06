@@ -9,6 +9,7 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 androidGifDrawable = "1.2.28"
 
+
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -19,6 +20,8 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 android-gif-drawable = { group = "pl.droidsonroids.gif", name = "android-gif-drawable", version.ref = "androidGifDrawable" }
 
+com-daimajia-easing-library = { group = "com.daimajia.easing", name = "library", version = "2.0" }
+com-daimajia-androidanimations-library = { group = "com.daimajia.androidanimations", name = "library", version = "2.3" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 

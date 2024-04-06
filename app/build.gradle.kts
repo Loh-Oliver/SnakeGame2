@@ -41,6 +41,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
+//    implementation(libs.com.daimajia.easing.library)
+//    implementation(libs.com.daimajia.androidanimations.library)
 }
 

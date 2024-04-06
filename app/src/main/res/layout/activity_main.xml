@@ -20,13 +20,22 @@
         android:gravity="center"
         android:orientation="vertical">
 
+
+
         <!-- This View will push the buttons and text to the bottom of the layout -->
+
+        <!-- ImageButton -->
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-
-        <!-- ImageButton -->
+        <TextView
+            android:id="@+id/myText"
+            android:text="2100 Singapore"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_purple"/>
         <Button
             android:id="@+id/myButton"
             android:layout_width="wrap_content"

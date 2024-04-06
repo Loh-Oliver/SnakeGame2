@@ -32,10 +32,10 @@ public class MainActivity extends Activity implements TrainGame.SnakeDeathListen
     public void onSnakeDeath() {
         // Handle snake death here
         // For example, return to MainActivity
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, EndingActivity.class);
         startActivity(intent);
-       // finish(); // Finish SnakeEngine activity
     }
+
 
     public void hideStatusBar() {
         // Hide the status bar using WindowInsetsController on Android 11 (API 30) and higher
@@ -46,8 +46,6 @@ public class MainActivity extends Activity implements TrainGame.SnakeDeathListen
         // Keep the screen always on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
-
-
 
     public void play(View view) {
         // Initialize the result into a Point object
