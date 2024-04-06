@@ -29,28 +29,13 @@ public class MainActivity extends Activity implements TrainGame.SnakeDeathListen
         // Get the pixel dimensions of the screen
         display = getWindowManager().getDefaultDisplay();
         setContentView(R.layout.activity_main);
+
+        //Game name animation
         TextView myText =findViewById(R.id.myText);
         Animation animation;
         animation = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.sample_animation);
         myText.startAnimation(animation);
-
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                Log.d("Animation", "Animation started");
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Log.d("Animation", "Animation ended");
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                Log.d("Animation", "Animation repeated");
-            }
-        });
 
     }
 
