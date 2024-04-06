@@ -18,4 +18,4 @@ In the Snake Game, players control a train that must pick up passengers within a
   - If the train successfully picks up a passenger within the time limit, the time resets to 7 seconds
   - If the train fails to pick up a passenger within the time limit and there is currently no passenger available, the game ends
   - If the train fails to pick up a passenger within the time limit but there is a passenger available, the train decreases in size
-- Only when the head of the train collides with the ** head of a passenger **, the train grows in size
+- Only when the head of the train collides with the **head of a passenger**, the train grows in size
