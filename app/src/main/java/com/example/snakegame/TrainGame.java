@@ -1,5 +1,7 @@
 package com.example.snakegame;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.os.Vibrator;
@@ -306,12 +308,40 @@ class TrainGame extends SurfaceView implements Runnable {
                         20,20, paint);
             }
 
-            // Draw Bob
+// Draw Bob
             paint.setColor(Color.argb(255, 255, 253, 208));
-            canvas.drawRect(bobX * blockSize,
-                    (bobY * blockSize) + playingAreaTop,
+// Draw head
+            canvas.drawCircle((bobX * blockSize) + (blockSize / 2),
+                    (bobY * blockSize) + (blockSize / 2) + playingAreaTop - (blockSize / 4),
+                    blockSize / 4,
+                    paint);
+// Draw body
+            canvas.drawRect((bobX * blockSize) + (blockSize / 3),
+                    (bobY * blockSize) + (blockSize / 2) + playingAreaTop,
+                    (bobX * blockSize) + (blockSize * 2 / 3),
+                    (bobY * blockSize) + (blockSize * 2) + playingAreaTop,
+                    paint);
+// Draw arms
+            canvas.drawRect((bobX * blockSize),
+                    (bobY * blockSize) + (blockSize / 2) + playingAreaTop,
+                    (bobX * blockSize) + (blockSize / 3),
+                    (bobY * blockSize) + (blockSize * 2) + playingAreaTop,
+                    paint);
+            canvas.drawRect((bobX * blockSize) + (blockSize * 2 / 3),
+                    (bobY * blockSize) + (blockSize / 2) + playingAreaTop,
                     (bobX * blockSize) + blockSize,
-                    (bobY * blockSize) + blockSize + playingAreaTop,
+                    (bobY * blockSize) + (blockSize * 2) + playingAreaTop,
+                    paint);
+// Draw legs
+            canvas.drawRect((bobX * blockSize) + (blockSize / 3),
+                    (bobY * blockSize) + (blockSize * 2) + playingAreaTop,
+                    (bobX * blockSize) + (blockSize / 2),
+                    (bobY * blockSize) + (blockSize * 3) + playingAreaTop,
+                    paint);
+            canvas.drawRect((bobX * blockSize) + (blockSize / 2),
+                    (bobY * blockSize) + (blockSize * 2) + playingAreaTop,
+                    (bobX * blockSize) + (blockSize * 2 / 3),
+                    (bobY * blockSize) + (blockSize * 3) + playingAreaTop,
                     paint);
 
             // Draw the score
